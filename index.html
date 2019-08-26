@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">YOU</h1>
+            <div class="healthbar">
+                <div 
+                    class="healthbar text-center"
+                    style="background-color: green; margin: 0; color: white;"
+                    :style="{ width: playerHealth + '%'}">
+                    <!-- hmmm, al ovo nije dobro za SEO je l? ovako tavljamo u style da width bude u procentima i  iznosi koliko i playerHealth, ono te dve stvari su sad povezane. po difoltu smo stavili da je playerHealth 100 tj 100% od parenta a to je ovaj gore healthbar koji je sivi. OVO sve isto vazi i za monsterHealth -->
+                    {{ playerHealth }}
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="healthbar">
+                <div 
+                    class="healthbar text-center"
+                    style="background-color: green; margin: 0; color: white;"
+                    :style="{ width: monsterHealth + '%'}">
+                    {{ monsterHealth }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row controls" v-if="!gameIsRunning">
+        <div class="small-12 columns">
+            <button id="start-game" @click="startGame">START NEW GAME</button>
+        </div>
+    </section>
+    <!-- elem, u ovom sectionu sad dole mozemo staviti v-else samo ako je ime taga kao i onaj u kom je v-if, a to je ovde dakle section (dakle ne bi radilo da je ovde div), i u istom tzv scope-u, na istom su levelu -->
+    <section class="row controls" v-else>
+        <div class="small-12 columns">
+            <button id="attack" @click="attack">ATTACK</button>
+            <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>
+            <button id="heal" @click="heal">HEAL</button>
+            <button id="give-up" @click="giveUp"> GIVE UP</button>
+        </div>
+    </section>
+
+    <section class="row log" v-if="turns.length > 0">
+        <div class="small-12 columns">
+            <ul>
+                <li v-for="turn in turns"
+                :class="{ 'player-turn': turn.isPlayer, 'monster-turn': !turn.isPlayer }">
+                <!-- bajdujemo objekat koji za key vrednost ima ime klase (koju smo definisali u css-u), za za value ima ovaj boolean isPlayer iz turns niza, ako je isPlayer true, ovaj li tag ce imati player-turn boju, a ako je false, imace monster-turn boju -->
+                    {{ turn.text }}
+                </li> 
+            </ul>
+        </div>
+    </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
